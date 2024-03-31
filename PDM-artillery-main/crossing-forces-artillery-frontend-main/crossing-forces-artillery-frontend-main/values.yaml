@@ -1,0 +1,41 @@
+# values.yaml
+
+replicaCount: 1
+
+# Mador-app-frontend/backend
+# For example - pzn-targets-manager-frontend
+app: pdm-crossing-forces-artillery-frontend 
+
+service:
+  type: ClusterIP
+  
+  # Your default listening port
+  port: 80
+  
+  # Mador-app-frontend/backend
+  # For example - pzn-targets-manager-frontend
+  lables: pdm-crossing-forces-artillery-frontend
+  
+  # The port which the app is listening to
+  targetPort: 8080
+
+route:
+  # Mador-app - Just for frontend projects (backend projects must leave this field empty - host: )
+  # For example - pzn-targets-manager
+  host: pdm-crossing-forces-artillery
+  
+  # Mador-app-frontend/backend
+  # For example - pzn-targets-manager-frontend
+  lables: pdm-crossing-forces-artillery-frontend
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi

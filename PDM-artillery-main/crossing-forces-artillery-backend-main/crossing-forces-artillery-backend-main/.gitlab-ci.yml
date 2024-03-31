@@ -1,0 +1,68 @@
+stages:
+  - build
+  - push
+  - deploy 
+
+variables:
+  REPO: "hashlama013" 
+  
+  # Mador-app-fronted/backend 
+  # For example pzn-targets-manager-frontend
+  APP: "pdm-crossing-forces-artillery-backend"
+ 
+  # Mador-app
+  # For example: pzn-targets-manager
+  PROJECT: "pdm-crossing-forces-artillery"
+
+.build_image:
+
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+
+  script:
+    - /kaniko/executor --context ${CI_PROJECT_DIR} --dockerfile Dockerfile --no-push --destination "sharedservicesbsmchprodacr.azurecr.io/hashlama013/${REPO}-${APP}:${CI_COMMIT_SHA}" --tarPath image.tar 
+
+  artifacts:
+    paths:
+      - image.tar
+    when: on_success 
+
+.push_image:
+
+  image:
+    name: gcr.io/go-containerregistry/crane:debug
+    entrypoint: [""]
+  script:
+    - crane auth login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - echo ${REPO}-${APP}:${CI_COMMIT_SHA}
+    - crane push image.tar sharedservicesbsmchprodacr.azurecr.io/hashlama013/${REPO}-${APP}:${CI_COMMIT_SHA} 
+
+
+.deploy_image:
+  image: euprogramador/openshift-helm:v2
+
+  script:
+    - oc login --token=$OPENSHIFT_TOKEN --server=$OPENSHIFT_CLUSTER_URL --insecure-skip-tls-verify=true
+    - oc project ${PROJECT}
+    - echo ${REPO}-${APP}:${CI_COMMIT_SHA}
+    - helm repo add --username chart-token --password glpat-Q3gnU33WUf_bybfGcJyY project-template https://gitlab.bsmch.net/api/v4/projects/14859/packages/helm/stable --insecure-skip-tls-verify
+    - helm pull project-template/basichart --insecure-skip-tls-verify=true
+    - helm repo update
+    - helm upgrade --verify=false --install $APP ./basichart-0.1.0.tgz --namespace ${PROJECT} -f values.yaml 
+      --set image.repository=sharedservicesbsmchprodacr.azurecr.io/hashlama013/${REPO}-${APP} 
+      --set image.tag=${CI_COMMIT_SHA}
+
+build:
+  stage: build
+  extends: .build_image
+
+push:
+  stage: push
+  extends: .push_image
+  needs: 
+    - build
+
+deploy:
+  stage: deploy 
+  extends: .deploy_image

@@ -1,0 +1,29 @@
+.leaflet-container {
+    height: 800px;
+}
+
+li {
+    font-size: 18px;
+    direction: rtl;
+    text-align: right;
+}
+
+h1 {
+    text-align: right;
+}
+
+.positiveAttackStatus {
+    color: green;
+}
+
+.negativeAttackStatus {
+    color: red;
+}
+
+.leaflet-container{
+    height: 92.2vh;
+}
+   
+.leaflet-control-attribution{
+    display: none;
+}

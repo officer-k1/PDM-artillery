@@ -1,0 +1,67 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  
+  background-color: #AAEFDF;
+  background-image: url("./assets/background.jpg");
+  background-size: auto;
+  background-position: center;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  font-family: "Secular One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: white;
+}
+
+.Loading-header {
+  background-size: auto;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.shown {
+  opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.leaflet-container{
+  height: 10vh;
+}
+
+.fade{
+  opacity: 50%;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap')
+

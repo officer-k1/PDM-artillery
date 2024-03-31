@@ -1,0 +1,12 @@
+.dataTable {
+  background-color: #e0e0e0;
+  border-radius: 10px;
+}
+
+.table {
+  direction: rtl;
+}
+.tableHead {
+  background-color: black;
+}
+
